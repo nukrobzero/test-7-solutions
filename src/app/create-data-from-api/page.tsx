@@ -1,7 +1,9 @@
 import { Summary, User } from "@/type/type";
 
 const Page = async () => {
-  const responseData = await fetch(`https://dummyjson.com/users`);
+  const responseData = await fetch(`https://dummyjson.com/users`, {
+    cache: "no-store",
+  });
   const userData = await responseData.json();
 
   const convertToSummary = (userData: { users: User[] }): Summary => {
