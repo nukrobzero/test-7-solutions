@@ -11,7 +11,7 @@ const TodoItem = ({ toDoData, onClick }: TodoItemProps) => {
     <div>
       <ul>
         {toDoData.map((data, idx) => (
-          <li key={idx} onClick={() => onClick(data.name)}>
+          <li key={idx} onClick={() => onClick(data.name)} className="cursor-pointer hover:bg-blue-100">
             {data.name}
           </li>
         ))}

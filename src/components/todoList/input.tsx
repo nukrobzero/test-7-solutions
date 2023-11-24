@@ -16,10 +16,13 @@ const Input = ({ ...props }: InputProps) => {
           onChange={(e) => props.onChange(e.target.value)}
           className="border-2"
         />
+        <button
+          onClick={props.onClick}
+          className="border-2 rounded-md w-full h-full hover:bg-slate-100"
+        >
+          Enter
+        </button>
       </div>
-      <button onClick={props.onClick} className="border-2 rounded-md p-4">
-        Enter
-      </button>
     </div>
   );
 };

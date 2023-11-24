@@ -1,6 +1,6 @@
 "use client";
 
-import { toDoData } from "@/ToDoData/data";
+import { toDoData } from "@/components/todoList/ToDoData/data";
 import TodoItem from "./todo-item";
 import Input from "./input";
 import { useEffect, useState } from "react";
@@ -16,29 +16,29 @@ const TodoList = () => {
   const [newData, setNewData] = useState<TodoLists[]>([]);
 
   useEffect(() => {
-    // Load newData from localStorage on component mount
+    // Load newData from localStorage
+    const storedData = localStorage.getItem("newData");
     const getDataFromLocalStorage = () => {
-      const storedData = localStorage.getItem("newData");
       if (storedData) {
         setNewData(JSON.parse(storedData));
       }
     };
 
-    getDataFromLocalStorage();
-
-    const intervalId = setInterval(() => {
+    const removeDataFromLocalStorage = () => {
       setNewData((prevData) => {
-        // Delete old data from position 0
-        const newDataCopy = [...prevData];
-        newDataCopy.shift();
-        return newDataCopy;
+        if (prevData && prevData.length > 0) {
+          const dataArray = [...prevData];
+          dataArray.splice(0, 1);
+          localStorage.setItem("newData", JSON.stringify(dataArray));
+          return dataArray;
+        }
+        return prevData;
       });
+    };
 
-      setNewData((newData) => {
-        localStorage.setItem("newData", JSON.stringify(newData));
-        return newData;
-      });
-    }, 5000);
+    const intervalId = setInterval(removeDataFromLocalStorage, 5000);
+
+    getDataFromLocalStorage();
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
@@ -58,7 +58,6 @@ const TodoList = () => {
     setSelectData("");
   };
 
-
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-2">
@@ -69,7 +68,7 @@ const TodoList = () => {
           onClick={setSelectData}
         />
       </div>
-      <div className="col-span-10 col-start-3">
+      <div className="col-span-10 col-start-3 space-y-4">
         <Input
           value={selectData}
           onChange={setSelectData}
